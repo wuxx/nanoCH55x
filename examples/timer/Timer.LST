@@ -1,0 +1,189 @@
+C51 COMPILER V9.00   TIMER                                                                 06/09/2019 23:25:25 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE TIMER
+OBJECT MODULE PLACED IN Timer.OBJ
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Timer.C LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          
+   2          /********************************** (C) COPYRIGHT *******************************
+   3          * File Name          : Timer.C
+   4          * Author             : WCH
+   5          * Version            : V1.0
+   6          * Date               : 2017/01/20
+   7          * Description        : CH554 Time 初始化、定时器、计数器赋值、T2捕捉功能开启函数等
+   8                                 定时器中断函数                    
+   9          *******************************************************************************/
+  10          #include ".\Public\CH554.H"                                                  
+  11          #include ".\Public\Debug.H"
+  12          #include "Timer.H" 
+  13          #include "stdio.h"
+  14          
+  15          #pragma  NOAREGS
+  16          
+  17          /*******************************************************************************
+  18          * Function Name  : mTimer_x_ModInit(UINT8 x ,UINT8 mode)
+  19          * Description    : CH554定时计数器x模式设置
+  20          * Input          : UINT8 mode,Timer模式选择
+  21                             0：模式0，13位定时器，TLn的高3位无效
+  22                             1：模式1，16位定时器
+  23                             2：模式2，8位自动重装定时器
+  24                             3：模式3，两个8位定时器  Timer0
+  25                             3：模式3，Timer1停止                  
+  26          * Output         : None
+  27          * Return         : 成功  SUCCESS
+  28                             失败  FAIL
+  29          *******************************************************************************/
+  30          UINT8 mTimer_x_ModInit(UINT8 x ,UINT8 mode)
+  31          {
+  32   1          if(x == 0){TMOD = TMOD & 0xf0 | mode;}
+  33   1          else if(x == 1){TMOD = TMOD & 0x0f | (mode<<4);}
+  34   1          else if(x == 2){RCLK = 0;TCLK = 0;CP_RL2 = 0;}                               //16位自动重载定时器
+  35   1          else return FAIL;
+  36   1          return SUCCESS;
+  37   1      }
+  38          
+  39          /*******************************************************************************
+  40          * Function Name  : mTimer_x_SetData(UINT8 x,UINT16 dat)
+  41          * Description    : CH554Timer0 TH0和TL0赋值
+  42          * Input          : UINT16 dat;定时器赋值
+  43          * Output         : None
+  44          * Return         : None
+  45          *******************************************************************************/
+  46          void mTimer_x_SetData(UINT8 x,UINT16 dat)
+  47          {
+  48   1          UINT16 tmp;
+  49   1          tmp = 65536 - dat;  
+  50   1          if(x == 0){TL0 = tmp & 0xff;TH0 = (tmp>>8) & 0xff;}
+  51   1          else if(x == 1){TL1 = tmp & 0xff;TH1 = (tmp>>8) & 0xff;}
+  52   1          else if(x == 2){
+  53   2            RCAP2L = TL2 = tmp & 0xff;                                               //16位自动重载定时器
+  54   2            RCAP2H = TH2 = (tmp>>8) & 0xff;
+  55   2          }                                                 
+C51 COMPILER V9.00   TIMER                                                                 06/09/2019 23:25:25 PAGE 2   
+
+  56   1      }
+  57          
+  58          /*******************************************************************************
+  59          * Function Name  : CAP2Init(UINT8 mode)
+  60          * Description    : CH554定时计数器2 T2EX引脚捕捉功能初始化
+  61                             UINT8 mode,边沿捕捉模式选择
+  62                             0:T2ex从下降沿到下一个下降沿
+  63                             1:T2ex任意边沿之间
+  64                             3:T2ex从上升沿到下一个上升沿
+  65          * Input          : None
+  66          * Output         : None
+  67          * Return         : None
+  68          *******************************************************************************/
+  69          void CAP2Init(UINT8 mode)
+  70          {
+  71   1          RCLK = 0;
+  72   1          TCLK = 0; 
+  73   1          C_T2  = 0;
+  74   1          EXEN2 = 1; 
+  75   1          CP_RL2 = 1;                                                                //启动T2ex的捕捉功能
+  76   1          T2MOD |= mode << 2;                                                        //边沿捕捉模式选择
+  77   1      }
+  78          
+  79          /*******************************************************************************
+  80          * Function Name  : CAP1Init(UINT8 mode)
+  81          * Description    : CH554定时计数器2 T2引脚捕捉功能初始化T2
+  82                             UINT8 mode,边沿捕捉模式选择
+  83                             0:T2ex从下降沿到下一个下降沿
+  84                             1:T2ex任意边沿之间
+  85                             3:T2ex从上升沿到下一个上升沿
+  86          * Input          : None
+  87          * Output         : None
+  88          * Return         : None
+  89          *******************************************************************************/
+  90          void CAP1Init(UINT8 mode)
+  91          {
+  92   1          RCLK = 0;
+  93   1          TCLK = 0;
+  94   1          CP_RL2 = 1;
+  95   1          C_T2 = 0;
+  96   1          T2MOD = T2MOD & ~T2OE | (mode << 2) | bT2_CAP1_EN;                         //使能T2引脚捕捉功能,边沿捕
+             -捉模式选择
+  97   1      }
+  98          
+  99          #ifdef T0_INT
+ 100          /*******************************************************************************
+ 101          * Function Name  : mTimer0Interrupt()
+ 102          * Description    : CH554定时计数器0定时计数器中断处理函数
+ 103          *******************************************************************************/
+ 104          void  mTimer0Interrupt( void ) interrupt INT_NO_TMR0 using 1                //timer0中断服务程序,使用寄存器
+             -组1
+ 105          {                                                                           //方式3时，TH0使用Timer1的中断
+             -资源
+ 106   1          SCK = ~SCK;
+ 107   1          printf("t0 interrupt\n");
+ 108   1      //     mTimer_x_SetData(0,0x0000);                                          //非自动重载方式需重新给TH0和T
+             -L0赋值      
+ 109   1      }
+ 110          #endif
+ 111          
+ 112          #ifdef T1_INT
+              /*******************************************************************************
+C51 COMPILER V9.00   TIMER                                                                 06/09/2019 23:25:25 PAGE 3   
+
+              * Function Name  : mTimer1Interrupt()
+              * Description    : CH554定时计数器0定时计数器中断处理函数
+              *******************************************************************************/
+              void  mTimer1Interrupt( void ) interrupt INT_NO_TMR1 using 2                //timer1中断服务程序,使用寄存器
+             -组2
+              {                                                                           //方式3时，Timer1停止
+                  SCK = ~SCK;
+              //     mTimer_x_SetData(1,0x0000);                                          //非自动重载方式需重新给TH1和T
+             -L1赋值      
+              }
+              #endif
+ 123          
+ 124          #ifdef T2_INT
+              /*******************************************************************************
+              * Function Name  : mTimer2Interrupt()
+              * Description    : CH554定时计数器0定时计数器中断处理函数
+              *******************************************************************************/
+              void  mTimer2Interrupt( void ) interrupt INT_NO_TMR2 using 3                //timer2中断服务程序,使用寄存器
+             -组3
+              {                                                                             
+                  mTimer2RunCTL( 0 );                                                     //关定时器
+              #ifdef  T2_CAP   
+                  if(EXF2)                                                                //T2ex电平变化中断中断标志
+                  {
+                      SCK = ~SCK;                                                         //P17电平指示监控
+                      Cap[FLAG++] = RCAP2;                                                //T2EX
+                      printf("RCAP2 %04x  \n",RCAP2);                                       
+                      EXF2 = 0;                                                           //清空T2ex捕捉中断标志    
+                  }
+                  if(CAP1F)                                                               //T2电平捕捉中断标志
+                  {
+                      Cap[FLAG++] = T2CAP1;                                               //T2;     
+                      printf("T2CAP1 %04x  \n",T2CAP1);       
+                      CAP1F = 0;                                                          //清空T2捕捉中断标志
+                  }
+              #endif  
+                  if(TF2)
+                  {
+                      TF2 = 0;                                                             //清空定时器2溢出中断         
+             -                                               
+                      SCK = ~SCK;                                                          //P17电平指示监控
+                  }
+                  mTimer2RunCTL( 1 );                                                      //开定时器   
+              }
+              #endif
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    175    ----
+   CONSTANT SIZE    =     14    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

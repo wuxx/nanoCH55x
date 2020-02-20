@@ -1,0 +1,498 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        06/09/2019  23:25:26  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE main.obj, Debug.obj, Timer.obj TO CH554DEMO RAMSIZE (256)
+
+
+MEMORY MODEL: LARGE
+
+
+INPUT MODULES INCLUDED:
+  main.obj (MAIN)
+  Debug.obj (DEBUG)
+  Timer.obj (TIMER)
+  C:\KEIL_V5\C51\LIB\C51L.LIB (?C_STARTUP)
+  C:\KEIL_V5\C51\LIB\C51L.LIB (?C?ULDIV)
+  C:\KEIL_V5\C51\LIB\C51L.LIB (?C?LSTXDATA)
+  C:\KEIL_V5\C51\LIB\C51L.LIB (?C?LSTKXDATA)
+  C:\KEIL_V5\C51\LIB\C51L.LIB (PRINTF)
+  C:\KEIL_V5\C51\LIB\C51L.LIB (?C_INIT)
+  C:\KEIL_V5\C51\LIB\C51L.LIB (?C?CLDPTR)
+  C:\KEIL_V5\C51\LIB\C51L.LIB (?C?CLDOPTR)
+  C:\KEIL_V5\C51\LIB\C51L.LIB (?C?CSTPTR)
+  C:\KEIL_V5\C51\LIB\C51L.LIB (?C?PLDIXDATA)
+  C:\KEIL_V5\C51\LIB\C51L.LIB (?C?PSTXDATA)
+  C:\KEIL_V5\C51\LIB\C51L.LIB (?C?CCASE)
+  C:\KEIL_V5\C51\LIB\C51L.LIB (PUTCHAR)
+
+
+LINK MAP OF MODULE:  CH554DEMO (MAIN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            REG     0008H     0008H     ABSOLUTE     "REG BANK 1"
+            DATA    0010H     000AH     UNIT         _DATA_GROUP_
+                    001AH     0006H                  *** GAP ***
+            BIT     0020H.0   0002H.2   UNIT         _BIT_GROUP_
+                    0022H.2   0000H.6                *** GAP ***
+            IDATA   0023H     0001H     UNIT         ?STACK
+
+            * * * * * * *  X D A T A   M E M O R Y  * * * * * * *
+            XDATA   0000H     0050H     UNIT         _XDATA_GROUP_
+            XDATA   0050H     0011H     UNIT         ?XD?MAIN
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0008H     UNIT         ?PR?CH554UART0RCVBYTE?DEBUG
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     0365H     UNIT         ?PR?PRINTF?PRINTF
+            CODE    0373H     01A9H     UNIT         ?C?LIB_CODE
+            CODE    051CH     0095H     UNIT         ?PR?MINITSTDIO?DEBUG
+            CODE    05B1H     008CH     UNIT         ?C_C51STARTUP
+            CODE    063DH     003AH     UNIT         ?PR?MAIN?MAIN
+            CODE    0677H     0033H     UNIT         ?PR?_MTIMER_X_MODINIT?TIMER
+            CODE    06AAH     002FH     UNIT         ?PR?_MTIMER_X_SETDATA?TIMER
+            CODE    06D9H     0027H     UNIT         ?PR?PUTCHAR?PUTCHAR
+            CODE    0700H     0023H     UNIT         ?PR?MTIMER0INTERRUPT?TIMER
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/09/2019  23:25:26  PAGE 2
+
+
+            CODE    0723H     0018H     UNIT         ?CO?MAIN
+            CODE    073BH     0018H     UNIT         ?PR?_CAP1INIT?TIMER
+            CODE    0753H     0017H     UNIT         ?PR?_MDELAYMS?DEBUG
+            CODE    076AH     0017H     UNIT         ?PR?_CH554WDTMODESELECT?DEBUG
+            CODE    0781H     0014H     UNIT         ?C_INITSEG
+            CODE    0795H     0012H     UNIT         ?PR?CFGFSYS?DEBUG
+            CODE    07A7H     0012H     UNIT         ?PR?_CAP2INIT?TIMER
+            CODE    07B9H     000EH     UNIT         ?PR?_MDELAYUS?DEBUG
+            CODE    07C7H     000EH     UNIT         ?CO?TIMER
+            CODE    07D5H     0008H     UNIT         ?PR?_CH554UART0SENDBYTE?DEBUG
+            CODE    07DDH     0004H     UNIT         ?PR?CH554UART0ALTER?DEBUG
+            CODE    07E1H     0003H     UNIT         ?PR?_CH554WDTFEED?DEBUG
+
+
+
+OVERLAY MAP OF MODULE:   CH554DEMO (MAIN)
+
+
+SEGMENT                                  BIT_GROUP          DATA_GROUP          XDATA_GROUP
+  +--> CALLED SEGMENT                 START    LENGTH     START    LENGTH     START    LENGTH
+---------------------------------------------------------------------------------------------
+?PR?MTIMER0INTERRUPT?TIMER            -----    -----      -----    -----      -----    -----
+  +--> ?CO?TIMER
+  +--> ?PR?PRINTF?PRINTF
+
+?PR?PRINTF?PRINTF                     0021H.1  0001H.1    0015H    0005H      0028H    0028H
+  +--> ?PR?PUTCHAR?PUTCHAR
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP                         -----    -----      -----    -----      -----    -----
+  +--> ?PR?MAIN?MAIN
+  +--> ?C_INITSEG
+
+?PR?MAIN?MAIN                         -----    -----      -----    -----      -----    -----
+  +--> ?PR?CFGFSYS?DEBUG
+  +--> ?PR?_MDELAYMS?DEBUG
+  +--> ?PR?MINITSTDIO?DEBUG
+  +--> ?CO?MAIN
+  +--> ?PR?PRINTF?PRINTF
+  +--> ?PR?_MTIMER_X_MODINIT?TIMER
+  +--> ?PR?_MTIMER_X_SETDATA?TIMER
+
+?PR?_MDELAYMS?DEBUG                   -----    -----      -----    -----      -----    -----
+  +--> ?PR?_MDELAYUS?DEBUG
+
+?PR?MINITSTDIO?DEBUG                  -----    -----      -----    -----      0028H    0005H
+
+
+
+SYMBOL TABLE OF MODULE:  CH554DEMO (MAIN)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/09/2019  23:25:26  PAGE 3
+
+
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  D:00E8H         PUBLIC        IE_EX
+  D:00A8H         PUBLIC        IE
+  X:0050H         PUBLIC        Cap
+  D:00B8H         PUBLIC        IP
+  X:0060H         PUBLIC        FLAG
+  D:00D8H         PUBLIC        USB_INT_FG
+  C:063DH         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  D:00F8H         PUBLIC        SPI0_STAT
+  B:00A8H.1       PUBLIC        ET0
+  B:0088H.4       PUBLIC        TR0
+  D:0080H         PUBLIC        ADC_CTRL
+  D:00C0H         PUBLIC        SCON1
+  D:00C9H         PUBLIC        T2MOD
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  C:063DH         LINE#         20
+  C:063DH         LINE#         21
+  C:063DH         LINE#         22
+  C:0640H         LINE#         23
+  C:0647H         LINE#         24
+  C:064AH         LINE#         25
+  C:0653H         LINE#         29
+  C:065CH         LINE#         30
+  C:065FH         LINE#         31
+  C:0666H         LINE#         32
+  C:066FH         LINE#         33
+  C:0671H         LINE#         34
+  C:0673H         LINE#         35
+  C:0675H         LINE#         36
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        MAIN
+
+  -------         MODULE        DEBUG
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  C:076AH         PUBLIC        _CH554WDTModeSelect
+  C:051CH         PUBLIC        mInitSTDIO
+  D:00E8H         PUBLIC        IE_EX
+  D:00A8H         PUBLIC        IE
+  C:07E1H         PUBLIC        _CH554WDTFeed
+  C:07DDH         PUBLIC        CH554UART0Alter
+  D:00B8H         PUBLIC        IP
+  B:0098H.0       PUBLIC        RI
+  B:0098H.1       PUBLIC        TI
+  D:00FFH         PUBLIC        WDOG_COUNT
+  D:00B9H         PUBLIC        CLOCK_CFG
+  C:0753H         PUBLIC        _mDelaymS
+  D:00D8H         PUBLIC        USB_INT_FG
+  C:07B9H         PUBLIC        _mDelayuS
+  B:00C8H.5       PUBLIC        RCLK
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/09/2019  23:25:26  PAGE 4
+
+
+  B:00C8H.4       PUBLIC        TCLK
+  D:0099H         PUBLIC        SBUF
+  D:0087H         PUBLIC        PCON
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  C:0795H         PUBLIC        CfgFsys
+  D:00F8H         PUBLIC        SPI0_STAT
+  C:07D5H         PUBLIC        _CH554UART0SendByte
+  D:008DH         PUBLIC        TH1
+  B:0098H.7       PUBLIC        SM0
+  B:0098H.6       PUBLIC        SM1
+  B:0098H.5       PUBLIC        SM2
+  B:0088H.6       PUBLIC        TR1
+  C:0003H         PUBLIC        CH554UART0RcvByte
+  D:0080H         PUBLIC        ADC_CTRL
+  D:00A1H         PUBLIC        SAFE_MOD
+  D:00B1H         PUBLIC        GLOBAL_CFG
+  D:00C0H         PUBLIC        SCON1
+  B:0098H.4       PUBLIC        REN
+  D:00C9H         PUBLIC        T2MOD
+  D:00C8H         PUBLIC        T2CON
+  D:00C6H         PUBLIC        PIN_FUNC
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          CFGFSYS
+  C:0795H         LINE#         25
+  C:0795H         LINE#         26
+  C:0795H         LINE#         33
+  C:0798H         LINE#         34
+  C:079BH         LINE#         42
+  C:07A3H         LINE#         56
+  C:07A6H         LINE#         57
+  -------         ENDPROC       CFGFSYS
+  -------         PROC          _MDELAYUS
+  D:0006H         SYMBOL        n
+  C:07B9H         LINE#         66
+  C:07B9H         LINE#         67
+  C:07B9H         LINE#         79
+  C:07BDH         LINE#         80
+  C:07BFH         LINE#         101
+  C:07C4H         LINE#         102
+  C:07C6H         LINE#         103
+  -------         ENDPROC       _MDELAYUS
+  -------         PROC          _MDELAYMS
+  D:0004H         SYMBOL        n
+  C:0753H         LINE#         112
+  C:0757H         LINE#         113
+  C:0757H         LINE#         114
+  C:075BH         LINE#         119
+  C:0762H         LINE#         121
+  C:0767H         LINE#         122
+  C:0769H         LINE#         123
+  -------         ENDPROC       _MDELAYMS
+  -------         PROC          CH554UART0ALTER
+  C:07DDH         LINE#         132
+  C:07DDH         LINE#         133
+  C:07DDH         LINE#         134
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/09/2019  23:25:26  PAGE 5
+
+
+  C:07E0H         LINE#         135
+  -------         ENDPROC       CH554UART0ALTER
+  -------         PROC          MINITSTDIO
+  -------         DO            
+  X:0028H         SYMBOL        x
+  X:002CH         SYMBOL        x2
+  -------         ENDDO         
+  C:051CH         LINE#         145
+  C:051CH         LINE#         146
+  C:051CH         LINE#         150
+  C:051EH         LINE#         151
+  C:0520H         LINE#         152
+  C:0522H         LINE#         154
+  C:0524H         LINE#         155
+  C:0526H         LINE#         156
+  C:0529H         LINE#         157
+  C:0533H         LINE#         158
+  C:054FH         LINE#         159
+  C:056CH         LINE#         160
+  C:0594H         LINE#         162
+  C:059CH         LINE#         163
+  C:059FH         LINE#         164
+  C:05AAH         LINE#         165
+  C:05ACH         LINE#         166
+  C:05AEH         LINE#         167
+  C:05B0H         LINE#         168
+  -------         ENDPROC       MINITSTDIO
+  -------         PROC          CH554UART0RCVBYTE
+  C:0003H         LINE#         177
+  C:0003H         LINE#         178
+  C:0003H         LINE#         179
+  C:0006H         LINE#         180
+  C:0008H         LINE#         181
+  C:000AH         LINE#         182
+  -------         ENDPROC       CH554UART0RCVBYTE
+  -------         PROC          _CH554UART0SENDBYTE
+  D:0007H         SYMBOL        SendDat
+  C:07D5H         LINE#         191
+  C:07D5H         LINE#         192
+  C:07D5H         LINE#         193
+  C:07D7H         LINE#         194
+  C:07DAH         LINE#         195
+  C:07DCH         LINE#         196
+  -------         ENDPROC       _CH554UART0SENDBYTE
+  -------         PROC          _CH554WDTMODESELECT
+  D:0007H         SYMBOL        mode
+  C:076AH         LINE#         207
+  C:076AH         LINE#         208
+  C:076AH         LINE#         209
+  C:076DH         LINE#         210
+  C:0770H         LINE#         211
+  C:0773H         LINE#         212
+  C:0776H         LINE#         213
+  C:0778H         LINE#         214
+  C:077BH         LINE#         215
+  C:077EH         LINE#         216
+  C:0780H         LINE#         217
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/09/2019  23:25:26  PAGE 6
+
+
+  -------         ENDPROC       _CH554WDTMODESELECT
+  -------         PROC          _CH554WDTFEED
+  D:0007H         SYMBOL        tim
+  C:07E1H         LINE#         228
+  C:07E1H         LINE#         229
+  C:07E1H         LINE#         230
+  C:07E3H         LINE#         231
+  -------         ENDPROC       _CH554WDTFEED
+  -------         ENDMOD        DEBUG
+
+  -------         MODULE        TIMER
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  D:00E8H         PUBLIC        IE_EX
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  C:073BH         PUBLIC        _CAP1Init
+  C:07A7H         PUBLIC        _CAP2Init
+  D:00CBH         PUBLIC        RCAP2H
+  D:00D8H         PUBLIC        USB_INT_FG
+  D:00CAH         PUBLIC        RCAP2L
+  B:00C8H.1       PUBLIC        C_T2
+  B:00C8H.5       PUBLIC        RCLK
+  B:00C8H.4       PUBLIC        TCLK
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  D:00F8H         PUBLIC        SPI0_STAT
+  B:00C8H.0       PUBLIC        CP_RL2
+  D:008CH         PUBLIC        TH0
+  D:008DH         PUBLIC        TH1
+  D:00CDH         PUBLIC        TH2
+  D:008AH         PUBLIC        TL0
+  D:008BH         PUBLIC        TL1
+  D:00CCH         PUBLIC        TL2
+  C:06AAH         PUBLIC        _mTimer_x_SetData
+  D:0080H         PUBLIC        ADC_CTRL
+  B:0090H.7       PUBLIC        SCK
+  C:0677H         PUBLIC        _mTimer_x_ModInit
+  B:00C8H.3       PUBLIC        EXEN2
+  D:00C0H         PUBLIC        SCON1
+  D:00C9H         PUBLIC        T2MOD
+  D:00C8H         PUBLIC        T2CON
+  C:0700H         PUBLIC        mTimer0Interrupt
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          _MTIMER_X_MODINIT
+  D:0007H         SYMBOL        x
+  D:0005H         SYMBOL        mode
+  C:0677H         LINE#         30
+  C:0677H         LINE#         31
+  C:0677H         LINE#         32
+  C:0683H         LINE#         33
+  C:0698H         LINE#         34
+  C:06A4H         LINE#         35
+  C:06A7H         LINE#         36
+  C:06A9H         LINE#         37
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/09/2019  23:25:26  PAGE 7
+
+
+  -------         ENDPROC       _MTIMER_X_MODINIT
+  -------         PROC          _MTIMER_X_SETDATA
+  D:0007H         SYMBOL        x
+  D:0004H         SYMBOL        dat
+  -------         DO            
+  D:0004H         SYMBOL        tmp
+  -------         ENDDO         
+  C:06AAH         LINE#         46
+  C:06AAH         LINE#         47
+  C:06AAH         LINE#         49
+  C:06B1H         LINE#         50
+  C:06BBH         LINE#         51
+  C:06C6H         LINE#         52
+  C:06CAH         LINE#         53
+  C:06D2H         LINE#         54
+  C:06D8H         LINE#         55
+  C:06D8H         LINE#         56
+  -------         ENDPROC       _MTIMER_X_SETDATA
+  -------         PROC          _CAP2INIT
+  D:0007H         SYMBOL        mode
+  C:07A7H         LINE#         69
+  C:07A7H         LINE#         70
+  C:07A7H         LINE#         71
+  C:07A9H         LINE#         72
+  C:07ABH         LINE#         73
+  C:07ADH         LINE#         74
+  C:07AFH         LINE#         75
+  C:07B1H         LINE#         76
+  C:07B8H         LINE#         77
+  -------         ENDPROC       _CAP2INIT
+  -------         PROC          _CAP1INIT
+  D:0007H         SYMBOL        mode
+  C:073BH         LINE#         90
+  C:073BH         LINE#         91
+  C:073BH         LINE#         92
+  C:073DH         LINE#         93
+  C:073FH         LINE#         94
+  C:0741H         LINE#         95
+  C:0743H         LINE#         96
+  C:0752H         LINE#         97
+  -------         ENDPROC       _CAP1INIT
+  -------         PROC          MTIMER0INTERRUPT
+  C:0700H         LINE#         104
+  C:070DH         LINE#         106
+  C:070FH         LINE#         107
+  C:0718H         LINE#         109
+  -------         ENDPROC       MTIMER0INTERRUPT
+  -------         ENDMOD        TIMER
+
+  -------         MODULE        ?C?ULDIV
+  C:03AFH         PUBLIC        ?C?ULDIV
+  -------         ENDMOD        ?C?ULDIV
+
+  -------         MODULE        ?C?LSTXDATA
+  C:0441H         PUBLIC        ?C?LSTXDATA
+  -------         ENDMOD        ?C?LSTXDATA
+
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/09/2019  23:25:26  PAGE 8
+
+
+  -------         MODULE        ?C?LSTKXDATA
+  C:044DH         PUBLIC        ?C?LSTKXDATA
+  -------         ENDMOD        ?C?LSTKXDATA
+
+  -------         MODULE        PRINTF
+  X:0028H         PUBLIC        ?_PRINTF517?BYTE
+  X:0028H         PUBLIC        ?_PRINTF?BYTE
+  X:0028H         PUBLIC        ?_SPRINTF517?BYTE
+  X:0028H         PUBLIC        ?_SPRINTF?BYTE
+  C:0079H         PUBLIC        _PRINTF
+  C:0079H         PUBLIC        _PRINTF517
+  C:0073H         PUBLIC        _SPRINTF
+  C:0073H         PUBLIC        _SPRINTF517
+  -------         ENDMOD        PRINTF
+
+  -------         MODULE        ?C?CLDPTR
+  C:047EH         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+  -------         MODULE        ?C?CLDOPTR
+  C:0497H         PUBLIC        ?C?CLDOPTR
+  -------         ENDMOD        ?C?CLDOPTR
+
+  -------         MODULE        ?C?CSTPTR
+  C:04C4H         PUBLIC        ?C?CSTPTR
+  -------         ENDMOD        ?C?CSTPTR
+
+  -------         MODULE        ?C?PLDIXDATA
+  C:04D6H         PUBLIC        ?C?PLDIXDATA
+  -------         ENDMOD        ?C?PLDIXDATA
+
+  -------         MODULE        ?C?PSTXDATA
+  C:04EDH         PUBLIC        ?C?PSTXDATA
+  -------         ENDMOD        ?C?PSTXDATA
+
+  -------         MODULE        ?C?CCASE
+  C:04F6H         PUBLIC        ?C?CCASE
+  -------         ENDMOD        ?C?CCASE
+
+  -------         MODULE        PUTCHAR
+  C:06D9H         PUBLIC        _PUTCHAR
+  -------         ENDMOD        PUTCHAR
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?CH554UART0ALTER?DEBUG
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?CH554UART0RCVBYTE?DEBUG
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_CH554UART0SENDBYTE?DEBUG
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_CH554WDTMODESELECT?DEBUG
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_CH554WDTFEED?DEBUG
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/09/2019  23:25:26  PAGE 9
+
+
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_CAP2INIT?TIMER
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_CAP1INIT?TIMER
+
+*** WARNING L15: MULTIPLE CALL TO SEGMENT
+    SEGMENT: ?PR?PRINTF?PRINTF
+    CALLER1: ?PR?MTIMER0INTERRUPT?TIMER
+    CALLER2: ?C_C51STARTUP
+
+Program Size: data=29.2 xdata=97 code=2020
+LINK/LOCATE RUN COMPLETE.  8 WARNING(S),  0 ERROR(S)

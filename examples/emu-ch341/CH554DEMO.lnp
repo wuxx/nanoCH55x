@@ -1,0 +1,4 @@
+"Debug.obj",
+"CompatibilityHID.obj" 
+TO "CH554DEMO" 
+RAMSIZE(256) 

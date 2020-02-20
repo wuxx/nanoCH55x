@@ -1,0 +1,43 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+G:\private\ch55x\software\ch552\uart\CH554.uvproj
+Project File Date:  06/09/2019
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(10): warning C206: 'CfgFsys': missing function-prototype
+MAIN.C(11): warning C206: 'mDelaymS': missing function-prototype
+MAIN.C(11): error C267: 'mDelaymS': requires ANSI-style prototype
+Target not created
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(11): warning C206: 'CfgFsys': missing function-prototype
+MAIN.C(12): warning C206: 'mDelaymS': missing function-prototype
+MAIN.C(12): error C267: 'mDelaymS': requires ANSI-style prototype
+Target not created
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(11): warning C206: 'CfgFsys': missing function-prototype
+MAIN.C(12): warning C206: 'mInitSTDIO': missing function-prototype
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  MINITSTDIO
+    MODULE:  main.obj (MAIN)
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  CFGFSYS
+    MODULE:  main.obj (MAIN)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  CFGFSYS
+    MODULE:  main.obj (MAIN)
+    ADDRESS: 04A9H
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  MINITSTDIO
+    MODULE:  main.obj (MAIN)
+    ADDRESS: 04ACH
+Program Size: data=15.1 xdata=42 code=1327
+creating hex file from "CH554DEMO"...
+"CH554DEMO" - 0 Error(s), 6 Warning(s).

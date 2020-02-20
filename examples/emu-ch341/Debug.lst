@@ -1,0 +1,309 @@
+C51 COMPILER V9.00   DEBUG                                                                 06/10/2019 22:17:54 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE DEBUG
+OBJECT MODULE PLACED IN Debug.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Public\Debug.C LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.
+                    -\Debug.lst) TABS(2) OBJECT(Debug.obj)
+
+line level    source
+
+   1          /********************************** (C) COPYRIGHT *******************************
+   2          * File Name          : Debug.C
+   3          * Author             : WCH
+   4          * Version            : V1.0
+   5          * Date               : 2017/01/20
+   6          * Description        : CH554 DEBUG Interface
+   7                               CH554Ö÷ÆµÐÞ¸Ä¡¢ÑÓÊ±º¯Êý¶¨Òå
+   8                               ´®¿Ú0ºÍ´®¿Ú1³õÊ¼»¯
+   9                               ´®¿Ú0ºÍ´®¿Ú1µÄÊÕ·¢×Óº¯Êý
+  10                               ¿´ÃÅ¹·³õÊ¼»¯                    
+  11          *******************************************************************************/
+  12          
+  13          #include "CH554.H"
+  14          #include "Debug.H"
+  15          
+  16          /*******************************************************************************
+  17          * Function Name  : CfgFsys( )
+  18          * Description    : CH554Ê±ÖÓÑ¡ÔñºÍÅäÖÃº¯Êý,Ä¬ÈÏÊ¹ÓÃFsys 6MHz£¬FREQ_SYS¿ÉÒÔÍ¨¹ý
+  19                             CLOCK_CFGÅäÖÃµÃµ½£¬¹«Ê½ÈçÏÂ£º
+  20                             Fsys = (Fosc * 4/(CLOCK_CFG & MASK_SYS_CK_SEL);¾ßÌåÊ±ÖÓÐèÒª×Ô¼ºÅäÖÃ 
+  21          * Input          : None
+  22          * Output         : None
+  23          * Return         : None
+  24          *******************************************************************************/ 
+  25          void  CfgFsys( )  
+  26          {
+  27   1      //    SAFE_MOD = 0x55;
+  28   1      //    SAFE_MOD = 0xAA;
+  29   1      //     CLOCK_CFG |= bOSC_EN_XT;                          //Ê¹ÄÜÍâ²¿¾§Õñ
+  30   1      //     CLOCK_CFG &= ~bOSC_EN_INT;                        //¹Ø±ÕÄÚ²¿¾§Õñ    
+  31   1          SAFE_MOD = 0x55;
+  32   1          SAFE_MOD = 0xAA;
+  33   1      //    CLOCK_CFG = CLOCK_CFG & ~ MASK_SYS_CK_SEL | 0x07;  // 32MHz 
+  34   1      //    CLOCK_CFG = CLOCK_CFG & ~ MASK_SYS_CK_SEL | 0x06;  // 24MHz 
+  35   1      //    CLOCK_CFG = CLOCK_CFG & ~ MASK_SYS_CK_SEL | 0x05;  // 16MHz 
+  36   1          CLOCK_CFG = CLOCK_CFG & ~ MASK_SYS_CK_SEL | 0x04;  // 12MHz
+  37   1      //    CLOCK_CFG = CLOCK_CFG & ~ MASK_SYS_CK_SEL | 0x03;  // 6MHz  
+  38   1      //    CLOCK_CFG = CLOCK_CFG & ~ MASK_SYS_CK_SEL | 0x02;  // 3MHz  
+  39   1      //    CLOCK_CFG = CLOCK_CFG & ~ MASK_SYS_CK_SEL | 0x01;  // 750KHz  
+  40   1      //    CLOCK_CFG = CLOCK_CFG & ~ MASK_SYS_CK_SEL | 0x00;  // 187.5MHz    
+  41   1          SAFE_MOD = 0x00;
+  42   1      }
+  43          
+  44          /*******************************************************************************
+  45          * Function Name  : mDelayus(UNIT16 n)
+  46          * Description    : usÑÓÊ±º¯Êý
+  47          * Input          : UNIT16 n
+  48          * Output         : None
+  49          * Return         : None
+  50          *******************************************************************************/ 
+  51          void  mDelayuS( UINT16 n )  // ÒÔuSÎªµ¥Î»ÑÓÊ±
+  52          {
+  53   1      #ifdef  FREQ_SYS
+  54   1      #if   FREQ_SYS <= 6000000
+C51 COMPILER V9.00   DEBUG                                                                 06/10/2019 22:17:54 PAGE 2   
+
+                  n >>= 2;
+              #endif
+  57   1      #if   FREQ_SYS <= 3000000
+                  n >>= 2;
+              #endif
+  60   1      #if   FREQ_SYS <= 750000
+                  n >>= 4;
+              #endif
+  63   1      #endif
+  64   1        while ( n ) {  // total = 12~13 Fsys cycles, 1uS @Fsys=12MHz
+  65   2          ++ SAFE_MOD;  // 2 Fsys cycles, for higher Fsys, add operation here
+  66   2      #ifdef  FREQ_SYS
+  67   2      #if   FREQ_SYS >= 14000000
+                  ++ SAFE_MOD;
+              #endif
+  70   2      #if   FREQ_SYS >= 16000000
+                  ++ SAFE_MOD;
+              #endif
+  73   2      #if   FREQ_SYS >= 18000000
+                  ++ SAFE_MOD;
+              #endif
+  76   2      #if   FREQ_SYS >= 20000000
+                  ++ SAFE_MOD;
+              #endif
+  79   2      #if   FREQ_SYS >= 22000000
+                  ++ SAFE_MOD;
+              #endif
+  82   2      #if   FREQ_SYS >= 24000000
+                  ++ SAFE_MOD;
+              #endif
+  85   2      #if   FREQ_SYS >= 26000000
+                  ++ SAFE_MOD;
+              #endif
+  88   2      #if   FREQ_SYS >= 28000000
+                  ++ SAFE_MOD;
+              #endif
+  91   2      #if   FREQ_SYS >= 30000000
+                  ++ SAFE_MOD;
+              #endif
+  94   2      #if   FREQ_SYS >= 32000000
+                  ++ SAFE_MOD;
+              #endif
+  97   2      #endif
+  98   2          -- n;
+  99   2        }
+ 100   1      }
+ 101          
+ 102          /*******************************************************************************
+ 103          * Function Name  : mDelayms(UNIT16 n)
+ 104          * Description    : msÑÓÊ±º¯Êý
+ 105          * Input          : UNIT16 n
+ 106          * Output         : None
+ 107          * Return         : None
+ 108          *******************************************************************************/
+ 109          void  mDelaymS( UINT16 n )                                                  // ÒÔmSÎªµ¥Î»ÑÓÊ±
+ 110          {
+ 111   1        while ( n ) {
+ 112   2      #ifdef  DELAY_MS_HW
+                  while ( ( TKEY_CTRL & bTKC_IF ) == 0 );
+                  while ( TKEY_CTRL & bTKC_IF );
+              #else
+ 116   2          mDelayuS( 1000 );
+C51 COMPILER V9.00   DEBUG                                                                 06/10/2019 22:17:54 PAGE 3   
+
+ 117   2      #endif
+ 118   2          -- n;
+ 119   2        }
+ 120   1      }                                         
+ 121          
+ 122          /*******************************************************************************
+ 123          * Function Name  : CH554UART0Alter()
+ 124          * Description    : CH554´®¿Ú0Òý½ÅÓ³Éä,´®¿ÚÓ³Éäµ½P0.2ºÍP0.3
+ 125          * Input          : None
+ 126          * Output         : None
+ 127          * Return         : None
+ 128          *******************************************************************************/
+ 129          void CH554UART0Alter()
+ 130          {
+ 131   1          PIN_FUNC |= bUART0_PIN_X;                                                  //´®¿ÚÓ³Éäµ½P1.2ºÍP1.3
+ 132   1      }
+ 133          
+ 134          /*******************************************************************************
+ 135          * Function Name  : mInitSTDIO()
+ 136          * Description    : CH554´®¿Ú0³õÊ¼»¯,Ä¬ÈÏÊ¹ÓÃT1×÷UART0µÄ²¨ÌØÂÊ·¢ÉúÆ÷,Ò²¿ÉÒÔÊ¹ÓÃT2
+ 137                             ×÷Îª²¨ÌØÂÊ·¢ÉúÆ÷
+ 138          * Input          : None
+ 139          * Output         : None
+ 140          * Return         : None
+ 141          *******************************************************************************/
+ 142          void  mInitSTDIO( )
+ 143          {
+ 144   1          UINT32 x;
+ 145   1          UINT8 x2; 
+ 146   1      
+ 147   1          SM0 = 0;
+ 148   1          SM1 = 1;
+ 149   1          SM2 = 0;                                                                   //´®¿Ú0Ê¹ÓÃÄ£Ê½1
+ 150   1                                                                                     //Ê¹ÓÃTimer1×÷Îª²¨ÌØÂÊ·¢ÉúÆ
+             -÷
+ 151   1          RCLK = 0;                                                                  //UART0½ÓÊÕÊ±ÖÓ
+ 152   1          TCLK = 0;                                                                  //UART0·¢ËÍÊ±ÖÓ
+ 153   1          PCON |= SMOD;
+ 154   1          x = 10 * FREQ_SYS / UART0_BUAD / 16;                                       //Èç¹û¸ü¸ÄÖ÷Æµ£¬×¢ÒâxµÄÖµ²»
+             -ÒªÒç³ö                            
+ 155   1          x2 = x % 10;
+ 156   1          x /= 10;
+ 157   1          if ( x2 >= 5 ) x ++;                                                       //ËÄÉáÎåÈë
+ 158   1      
+ 159   1          TMOD = TMOD & ~ bT1_GATE & ~ bT1_CT & ~ MASK_T1_MOD | bT1_M1;              //0X20£¬Timer1×÷Îª8Î»×Ô¶¯ÖØ
+             -ÔØ¶¨Ê±Æ÷
+ 160   1          T2MOD = T2MOD | bTMR_CLK | bT1_CLK;                                        //Timer1Ê±ÖÓÑ¡Ôñ
+ 161   1          TH1 = 0-x;                                                                 //12MHz¾§Õñ,buad/12ÎªÊµ¼ÊÐè
+             -ÉèÖÃ²¨ÌØÂÊ
+ 162   1          TR1 = 1;                                                                   //Æô¶¯¶¨Ê±Æ÷1
+ 163   1          TI = 1;
+ 164   1          REN = 1;                                                                   //´®¿Ú0½ÓÊÕÊ¹ÄÜ
+ 165   1      }
+ 166          
+ 167          /*******************************************************************************
+ 168          * Function Name  : CH554UART0RcvByte()
+ 169          * Description    : CH554UART0½ÓÊÕÒ»¸ö×Ö½Ú
+ 170          * Input          : None
+ 171          * Output         : None
+ 172          * Return         : SBUF
+ 173          *******************************************************************************/
+ 174          UINT8  CH554UART0RcvByte( )
+C51 COMPILER V9.00   DEBUG                                                                 06/10/2019 22:17:54 PAGE 4   
+
+ 175          {
+ 176   1          while(RI == 0);                                                            //²éÑ¯½ÓÊÕ£¬ÖÐ¶Ï·½Ê½¿É²»ÓÃ
+ 177   1          RI = 0;
+ 178   1          return SBUF;
+ 179   1      }
+ 180          
+ 181          /*******************************************************************************
+ 182          * Function Name  : CH554UART0SendByte(UINT8 SendDat)
+ 183          * Description    : CH554UART0·¢ËÍÒ»¸ö×Ö½Ú
+ 184          * Input          : UINT8 SendDat£»Òª·¢ËÍµÄÊý¾Ý
+ 185          * Output         : None
+ 186          * Return         : None
+ 187          *******************************************************************************/
+ 188          void CH554UART0SendByte(UINT8 SendDat)
+ 189          {
+ 190   1        SBUF = SendDat;                                                              //²éÑ¯·¢ËÍ£¬ÖÐ¶Ï·½Ê½¿É²»ÓÃÏÂ
+             -Ãæ2ÌõÓï¾ä,µ«·¢ËÍÇ°ÐèTI=0
+ 191   1        while(TI ==0);
+ 192   1        TI = 0;
+ 193   1      }
+ 194          
+ 195          /*******************************************************************************
+ 196          * Function Name  : UART1Setup()
+ 197          * Description    : CH554´®¿Ú1³õÊ¼»¯
+ 198          * Input          : None
+ 199          * Output         : None
+ 200          * Return         : None
+ 201          *******************************************************************************/
+ 202          void  UART1Setup( )
+ 203          {
+ 204   1         U1SM0 = 0;                                                                   //UART1Ñ¡Ôñ8Î»Êý¾ÝÎ»
+ 205   1         U1SMOD = 1;                                                                  //¿ìËÙÄ£Ê½
+ 206   1         U1REN = 1;                                                                   //Ê¹ÄÜ½ÓÊÕ
+ 207   1         SBAUD1 = 0 - FREQ_SYS/16/UART1_BUAD;
+ 208   1      }
+ 209          
+ 210          /*******************************************************************************
+ 211          * Function Name  : CH554UART1RcvByte()
+ 212          * Description    : CH554UART1½ÓÊÕÒ»¸ö×Ö½Ú
+ 213          * Input          : None
+ 214          * Output         : None
+ 215          * Return         : SBUF
+ 216          *******************************************************************************/
+ 217          UINT8  CH554UART1RcvByte( )
+ 218          {
+ 219   1          while(U1RI == 0);                                                           //²éÑ¯½ÓÊÕ£¬ÖÐ¶Ï·½Ê½¿É²»ÓÃ
+ 220   1          U1RI = 0;
+ 221   1          return SBUF1;
+ 222   1      }
+ 223          
+ 224          /*******************************************************************************
+ 225          * Function Name  : CH554UART1SendByte(UINT8 SendDat)
+ 226          * Description    : CH554UART1·¢ËÍÒ»¸ö×Ö½Ú
+ 227          * Input          : UINT8 SendDat£»Òª·¢ËÍµÄÊý¾Ý
+ 228          * Output         : None
+ 229          * Return         : None
+ 230          *******************************************************************************/
+ 231          void CH554UART1SendByte(UINT8 SendDat)
+ 232          {
+ 233   1        SBUF1 = SendDat;                                                             //²éÑ¯·¢ËÍ£¬ÖÐ¶Ï·½Ê½¿É²»ÓÃÏÂ
+             -Ãæ2ÌõÓï¾ä,µ«·¢ËÍÇ°ÐèTI=0
+ 234   1        while(U1TI ==0);
+C51 COMPILER V9.00   DEBUG                                                                 06/10/2019 22:17:54 PAGE 5   
+
+ 235   1        U1TI = 1;
+ 236   1      }
+ 237          
+ 238          /*******************************************************************************
+ 239          * Function Name  : CH554WDTModeSelect(UINT8 mode)
+ 240          * Description    : CH554¿´ÃÅ¹·Ä£Ê½Ñ¡Ôñ
+ 241          * Input          : UINT8 mode 
+ 242                             0  timer
+ 243                             1  watchDog
+ 244          * Output         : None
+ 245          * Return         : None
+ 246          *******************************************************************************/
+ 247          void CH554WDTModeSelect(UINT8 mode)
+ 248          {
+ 249   1         SAFE_MOD = 0x55;
+ 250   1         SAFE_MOD = 0xaa;                                                             //½øÈë°²È«Ä£Ê½
+ 251   1         if(mode){
+ 252   2           GLOBAL_CFG |= bWDOG_EN;                                                    //Æô¶¯¿´ÃÅ¹·¸´Î»
+ 253   2         }
+ 254   1         else GLOBAL_CFG &= ~bWDOG_EN;                                              //Æô¶¯¿´ÃÅ¹·½ö½ö×÷Îª¶¨Ê±Æ÷
+ 255   1         SAFE_MOD = 0x00;                                                             //ÍË³ö°²È«Ä£Ê½
+ 256   1         WDOG_COUNT = 0;                                                              //¿´ÃÅ¹·¸³³õÖµ
+ 257   1      }
+ 258          
+ 259          /*******************************************************************************
+ 260          * Function Name  : CH554WDTFeed(UINT8 tim)
+ 261          * Description    : CH554¿´ÃÅ¹·¶¨Ê±Ê±¼äÉèÖÃ
+ 262          * Input          : UINT8 tim ¿´ÃÅ¹·¸´Î»Ê±¼äÉèÖÃ
+ 263                             00H(6MHz)=2.8s
+ 264                             80H(6MHz)=1.4s
+ 265          * Output         : None
+ 266          * Return         : None
+ 267          *******************************************************************************/
+ 268          void CH554WDTFeed(UINT8 tim)
+ 269          {
+ 270   1         WDOG_COUNT = tim;                                                             //¿´ÃÅ¹·¼ÆÊýÆ÷¸³Öµ 
+ 271   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    276    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----       5
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

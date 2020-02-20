@@ -1,0 +1,4 @@
+"main.obj",
+"Debug.obj" 
+TO "CH554DEMO" 
+RAMSIZE(256) 

@@ -1,0 +1,103 @@
+C51 COMPILER V9.00   MAIN                                                                  06/09/2019 23:24:40 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          
+   2          /********************************** (C) COPYRIGHT *******************************
+   3          * File Name          : Main.C
+   4          * Author             : WCH
+   5          * Version            : V1.1
+   6          * Date               : 2017/09/05
+   7          * Description        : CH554 Time ³õÊ¼»¯¡¢¶¨Ê±Æ÷¡¢¼ÆÊýÆ÷¸³Öµ£¬T2²¶×½¹¦ÄÜµÈ
+   8                                 ¶¨Ê±Æ÷ÖÐ¶Ï´¦Àí 
+   9          *******************************************************************************/
+  10          #include ".\Public\CH554.H"                                                  
+  11          #include ".\Public\Debug.H"
+  12          #include "Timer.H"
+  13          #include "stdio.h"
+  14          
+  15          #pragma  NOAREGS
+  16          
+  17          UINT8 FLAG;
+  18          UINT16 Cap[8] = {0};
+  19          
+  20          main( ) 
+  21          {
+  22   1          CfgFsys( );                                                                //CH554Ê±ÖÓÑ¡ÔñÅäÖÃ   
+  23   1          mDelaymS(5);                                                               //ÐÞ¸ÄÖ÷Æµ£¬½¨ÒéÉÔ¼ÓÑÓÊ±µÈ´
+             -ýÖ÷ÆµÎÈ¶¨   
+  24   1          mInitSTDIO( );                                                             //´®¿Ú³õÊ¼»¯
+  25   1          printf("start ...\n"); 
+  26   1      
+  27   1      
+  28   1      #ifdef T0_INT
+  29   1          printf("T0 Test ...\n"); 
+  30   1          mTimer0Clk12DivFsys();                                                     //T0¶¨Ê±Æ÷Ê±ÖÓÉèÖÃ
+  31   1          mTimer_x_ModInit(0,2);                                                     //T0 ¶¨Ê±Æ÷Ä£Ê½ÉèÖÃ
+  32   1          mTimer_x_SetData(0,0x5555);                                                //T0¶¨Ê±Æ÷¸³Öµ
+  33   1          mTimer0RunCTL(1);                                                          //T0¶¨Ê±Æ÷Æô¶¯ 
+  34   1          ET0 = 1;                                                                   //T0¶¨Ê±Æ÷ÖÐ¶Ï¿ªÆô   
+  35   1          EA = 1;
+  36   1          while(1);
+  37   1      #endif  
+  38   1      
+  39   1      #ifdef T1_INT
+                  printf("T1 Test ...\n"); 
+                  mTimer1Clk12DivFsys();                                                     //T1¶¨Ê±Æ÷Ê±ÖÓÉèÖÃ 
+                  mTimer_x_ModInit(1,2);                                                     //T1 ¶¨Ê±Æ÷Ä£Ê½ÉèÖÃ
+                  mTimer_x_SetData(1,0xEEEE);                                                //T1¶¨Ê±Æ÷¸³Öµ
+                  mTimer1RunCTL(1);                                                          //T1¶¨Ê±Æ÷Æô¶¯   
+                  ET1 = 1;                                                                   //T1¶¨Ê±Æ÷ÖÐ¶Ï¿ªÆô   
+                  EA = 1;
+                  while(1); 
+              #endif  
+  49   1      
+  50   1      
+  51   1      #ifdef T2_INT
+                  printf("T2 Test ...\n"); 
+                  mTimer2ClkFsys();                                                          //T2¶¨Ê±Æ÷Ê±ÖÓÉèÖÃ
+                  mTimer_x_ModInit(2,0);                                                     //T2 ¶¨Ê±Æ÷Ä£Ê½ÉèÖÃ
+C51 COMPILER V9.00   MAIN                                                                  06/09/2019 23:24:40 PAGE 2   
+
+                  mTimer_x_SetData(2,0xAAAA);                                                //T2¶¨Ê±Æ÷¸³Öµ
+                  mTimer2RunCTL(1);                                                          //T2¶¨Ê±Æ÷Æô¶¯     
+                  ET2 = 1;                                                                   //T2¶¨Ê±Æ÷ÖÐ¶Ï¿ªÆô   
+                  EA = 1;
+                  while(1); 
+              #endif
+  61   1      
+  62   1      
+  63   1      #ifdef T2_CAP
+                  printf("T2_CAP Test ...\n"); 
+                  mTimer2ClkFsys();                                                         //T2¶¨Ê±Æ÷Ê±ÖÓÉèÖÃ
+                  mTimer_x_SetData(2,0);                                                    //T2 ¶¨Ê±Æ÷Ä£Ê½ÉèÖÃ²¶×½Ä£Ê½ 
+             -  
+                  CAP2Init(1);                                                              //T2 CAP2ÉèÖÃ£¬ÈÎÒâÑØ²¶×½
+                  CAP1Init(1);                                                              //T2 CAP2ÉèÖÃ£¬ÈÎÒâÑØ²¶×½
+                  mTimer2RunCTL(1);                                                         //T2¶¨Ê±Æ÷Æô¶¯      
+                  ET2 = 1;                                                                  //T2¶¨Ê±Æ÷ÖÐ¶Ï¿ªÆô  
+                  EA = 1;
+                  while(1);     
+              #endif
+  74   1          
+  75   1          while(1);
+  76   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     58    ----
+   CONSTANT SIZE    =     24    ----
+   XDATA SIZE       =     17    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
