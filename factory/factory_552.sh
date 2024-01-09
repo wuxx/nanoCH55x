@@ -10,7 +10,7 @@ function onCtrlC () {
 }
 
 while [ 1 ]; do
-    ./flash_write.sh
+    ./flash_write_552.sh
     if [ $? -eq 0 ]; then
 
         succ_count=$(($succ_count+1))  
